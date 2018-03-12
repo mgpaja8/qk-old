@@ -6,7 +6,7 @@ export default class Hello extends Component {
     return(
       <View style={{paddingTop: 20}}>
         <Text>
-          Hello
+          CheckIn
         </Text>
       </View>
     );

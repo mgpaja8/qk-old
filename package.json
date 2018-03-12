@@ -8,15 +8,22 @@
     "test-watch": "jest --watch",
     "test-coverage": "jest --coverage",
     "ios": "npm run tsc-watch & react-native run-ios",
-    "android": "npm run tsc-watch react-native run-android",
+    "android": "npm run tsc-watch & react-native run-android",
     "tsc": "tsc",
     "tsc-watch": "tsc -w",
     "linter": "tslint 'src/**/*.ts?(x)'"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "moment": "^2.21.0",
     "react": "^16.3.0-alpha.1",
     "react-native": "0.54.1",
-    "react-native-navigation": "^1.1.407"
+    "react-native-device-info": "^0.17.4",
+    "react-native-navigation": "^1.1.407",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "@types/react": "^16.0.40",

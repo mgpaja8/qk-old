@@ -1,14 +1,17 @@
 import { Navigation } from 'react-native-navigation';
-
+import { Provider } from 'react-redux';
+import store from './store';
 import { registerScreens } from './screens';
 
-registerScreens();
+registerScreens(store, Provider);
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'example.Hello',
+    screen: 'DeviceRegistration',
     title: 'Welcome',
-    navigatorStyle: {},
+    navigatorStyle: {
+      navBarHidden: true
+    },
     navigatorButtons: {}
   },
   passProps: {},
