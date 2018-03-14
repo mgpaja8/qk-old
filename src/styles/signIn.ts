@@ -8,16 +8,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  registrationFailedText: {
-    fontWeight: 'bold',
-    fontSize: 12,
-    marginBottom: 5
-  },
-  imageView: {
-    marginBottom: 5
-  },
-  errorText: {
-    fontSize: 12,
-    fontWeight: '100'
+  rowContainerView: {
+    flexDirection: 'row',
+    justifyContent: 'center'
   }
 });

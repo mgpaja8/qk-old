@@ -55,3 +55,36 @@ function fetchTasks(operationId: string, dispatch: Function) {
       });
     });
 }
+
+export function signIn(operationId: string, code: string): (dispatch: Function) => void {
+  const url = `${baseUrl}/operations/${operationId}/sign-in`;
+
+  return function(dispatch: Function): void {
+    dispatch({
+      type: actionTypes.FETCH_USER_LOADING
+    });
+
+    axios.post(url, {
+      employeeCode: code
+    })
+      .then(response => {
+        dispatch({
+          type: actionTypes.FETCH_USER_SUCCESS,
+          response
+        });
+      })
+      .catch(e => {
+        dispatch({
+          type: actionTypes.FETCH_USER_ERROR
+        });
+      });
+  }
+}
+
+export function signOut(): (dispatch: Function) => void {
+  return function(dispatch: Function): void {
+    dispatch({
+      type: actionTypes.SIGN_OUT
+    });
+  }
+}

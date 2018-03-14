@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, Image, Text, View } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { checkDevice } from '../actions/actions';
@@ -59,12 +60,12 @@ class DeviceRegistration extends Component<DeviceRegistrationPropTypes> {
   renderActivityIndicator() {
     const { containerView } = style;
     return(
-      <View style={containerView}>
+      <SafeAreaView style={containerView}>
         <ActivityIndicator
           size='large'
           color={color.primary}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -77,7 +78,7 @@ class DeviceRegistration extends Component<DeviceRegistrationPropTypes> {
     } = style;
 
     return(
-      <View style={containerView}>
+      <SafeAreaView style={containerView}>
         <Text style={registrationFailedText}>
           Registration Failed
         </Text>
@@ -89,7 +90,7 @@ class DeviceRegistration extends Component<DeviceRegistrationPropTypes> {
           manager for help. If they can't fix it, please contact our customer
           support and we'll be happy to help.
         </Text>
-      </View>
+      </SafeAreaView>
     );
   }
 }
