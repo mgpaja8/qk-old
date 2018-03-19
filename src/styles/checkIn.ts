@@ -55,5 +55,20 @@ export default StyleSheet.create({
   notYouText: {
     fontSize: 12,
     color: 'white'
+  },
+  checkInButtonContainerView: {
+    justifyContent: 'center',
+    margin: 5,
+    padding: 5,
+    backgroundColor: color.primary
+  },
+  checkInButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  checkInButtonText: {
+    marginLeft: 10,
+    color: 'white'
   }
 });

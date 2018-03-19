@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,6 +10,8 @@ import Initials from '../components/Initials';
 import { EmployeeType } from '../types/qkTypes';
 
 import style from '../styles/checkIn';
+
+const checkInImage = require('../../assets/images/Check_In/ic_check_in.png');
 
 export interface CheckInPropType {
   actions: {
@@ -62,7 +64,7 @@ class CheckIn extends Component<CheckInPropType> {
     return true;
   }
 
-  signOut = () => {
+  onSignOut = () => {
     this.props.actions.signOut();
     this.props.navigator.resetTo({
       screen: 'SignIn',
@@ -74,15 +76,16 @@ class CheckIn extends Component<CheckInPropType> {
     });
   }
 
+  onCheckInPress = () => {
+    console.log('check in pressed');
+  }
+
   render() {
     return(
       <SafeAreaView style={style.containerView}>
         {this.renderHeader()}
-        <View>
-          <Text style={{backgroundColor: 'white'}}>
-            StyleSheet
-          </Text>
-        </View>
+        {this.renderBody()}
+        {this.renderCheckInButton()}
       </SafeAreaView>
     );
   }
@@ -109,7 +112,7 @@ class CheckIn extends Component<CheckInPropType> {
           <View style={style.notYouContainerView}>
             <TouchableOpacity
               style={style.notYouButton}
-              onPress={this.signOut}
+              onPress={this.onSignOut}
             >
               <Text style={style.notYouText}>
                 Not you?
@@ -117,6 +120,32 @@ class CheckIn extends Component<CheckInPropType> {
             </TouchableOpacity>
           </View>
         </View>
+      </View>
+    );
+  }
+
+  renderBody() {
+    return (
+      <View style={{flex: 1}}>
+        <Text>
+          StyleSheet
+        </Text>
+      </View>
+    );
+  }
+
+  renderCheckInButton() {
+    return (
+      <View style={style.checkInButtonContainerView}>
+        <TouchableOpacity
+          onPress={this.onCheckInPress}
+          style={style.checkInButton}
+        >
+          <Image source={checkInImage} />
+          <Text style={style.checkInButtonText}>
+            Check in as {this.props.employee.fullName}
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
