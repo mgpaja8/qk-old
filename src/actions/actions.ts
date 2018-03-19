@@ -88,3 +88,12 @@ export function signOut(): (dispatch: Function) => void {
     });
   }
 }
+
+export function userCheckedIn(taskGroups: string[]): (dispatch: Function) => void {
+  return function(dispatch: Function): void {
+    dispatch({
+      type: actionTypes.USER_CHECKED_IN,
+      taskGroups
+    });
+  }
+}

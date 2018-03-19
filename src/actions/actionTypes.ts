@@ -9,6 +9,8 @@ export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_ERROR = 'FETCH_USER_ERROR';
 export const SIGN_OUT = 'SIGN_OUT';
 
+export const USER_CHECKED_IN = 'USER_CHECKED_IN';
+
 // tasks
 export const FETCH_TASKS_LOADING = 'FETCH_TASKS_LOADING';
 export const FETCH_TASKS_SUCCESS = 'FETCH_TASKS_SUCCESS';

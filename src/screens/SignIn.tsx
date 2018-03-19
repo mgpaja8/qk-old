@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ActivityIndicator } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import * as Animatable from 'react-native-animatable';
 import { bindActionCreators } from 'redux';
@@ -9,9 +9,10 @@ import { signIn } from '../actions/actions';
 import CodeField from '../components/CodeField';
 import DigitButton from '../components/DigitButton';
 
-import { EmployeeType, SelectedOperationStateType } from '../types/qkTypes';
+import { EmployeeType, OperationStateType } from '../types/qkTypes';
 
 import style from '../styles/signIn';
+import { color } from '../styles/variables';
 
 export interface UserStateType {
   employee?: EmployeeType;
@@ -25,7 +26,7 @@ export interface SignInPropType {
   }
   navigator?: any;
   user: UserStateType;
-  selectedOperation: SelectedOperationStateType;
+  operation: OperationStateType;
 }
 
 export interface SignInStateType {
@@ -40,6 +41,23 @@ class SignIn extends Component<SignInPropType, SignInStateType> {
 
     this.state = {
       code: []
+    }
+  }
+
+  componentWillReceiveProps(nextProps: SignInPropType): void {
+    if (!nextProps.user.isFetching && nextProps.user.isLoggedIn === false && this.state.code.length === 4) {
+      this.clearCode();
+    }
+
+    if (nextProps.user.isLoggedIn) {
+      this.props.navigator.resetTo({
+        screen: 'CheckIn',
+        animated: true,
+        animationType: 'fade',
+        navigatorStyle: {
+          navBarHidden: true
+        }
+      });
     }
   }
 
@@ -60,10 +78,9 @@ class SignIn extends Component<SignInPropType, SignInStateType> {
       code: newCode
     }, () => {
       if (this.state.code.length === 4) {
-        //this.props.actions.signIn(this.props.selectedOperation.id, this.state.code.join(''));
+        this.props.actions.signIn(this.props.operation.id, this.state.code.join(''));
       }
     });
-    console.log('Pressed => ', digit);
   }
 
   render() {
@@ -78,12 +95,11 @@ class SignIn extends Component<SignInPropType, SignInStateType> {
   }
 
   renderText() {
-    // const { isFetching } = this.props.user;
-    // const { textWeightNormal } = styleCommon;
-    //
-    // if (isFetching) {
-    //   return <ActivityIndicator size="small" color={colors.primary} />;
-    // }
+    const { isFetching } = this.props.user;
+
+    if (isFetching) {
+      return <ActivityIndicator size="small" color={color.primary} />;
+    }
 
     return <Text>Enter employee code</Text>;
   }
@@ -182,7 +198,7 @@ class SignIn extends Component<SignInPropType, SignInStateType> {
 function mapStateToProps(state, ownProps) {
 	return {
 		user: state.user,
-    selectedOperation: state.selectedOperation
+    operation: state.operation.operation
 	};
 }
 
