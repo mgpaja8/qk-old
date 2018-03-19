@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { userCheckedIn } from '../actions/actions';
+import { userCheckedIn, signOut } from '../actions/actions';
+
+import Initials from '../components/Initials';
 
 import { EmployeeType } from '../types/qkTypes';
+
+import style from '../styles/checkIn';
 
 export interface CheckInPropType {
   actions: {
     userCheckedIn: (taskGroups: string[]) => void;
+    signOut: () => void;
   }
   navigator?: any;
   dispatch?: any;
@@ -34,7 +40,7 @@ class CheckIn extends Component<CheckInPropType> {
       return acc;
     }, []);
 
-    // if employee is checked in open checklist screen 
+    // if employee is checked in open checklist screen
     if(checkedInGroups.length > 0) {
       this.props.actions.userCheckedIn(checkedInGroups);
       this.props.navigator.resetTo({
@@ -48,12 +54,69 @@ class CheckIn extends Component<CheckInPropType> {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState): boolean {
+    if (!nextProps.employee) {
+      return false;
+    }
+
+    return true;
+  }
+
+  signOut = () => {
+    this.props.actions.signOut();
+    this.props.navigator.resetTo({
+      screen: 'SignIn',
+      animated: true,
+      animationType: 'fade',
+      navigatorStyle: {
+        navBarHidden: true
+      }
+    });
+  }
+
   render() {
     return(
-      <View style={{paddingTop: 20}}>
-        <Text>
-          CheckIn
+      <SafeAreaView style={style.containerView}>
+        {this.renderHeader()}
+        <View>
+          <Text style={{backgroundColor: 'white'}}>
+            StyleSheet
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  renderHeader() {
+    const { employee } = this.props;
+    return (
+      <View style={style.headerContainerView}>
+        <Text style={style.checkingInText}>
+          Checking in as
         </Text>
+        <View style={style.infoContainerView}>
+          <View style={style.leftContainerView}>
+            <Initials initials={employee.initials}/>
+            <View style={style.employeeContainerView}>
+              <Text style={style.employeeText}>
+                {employee.fullName}
+              </Text>
+              <Text style={style.employeeText}>
+                {employee.role}
+              </Text>
+            </View>
+          </View>
+          <View style={style.notYouContainerView}>
+            <TouchableOpacity
+              style={style.notYouButton}
+              onPress={this.signOut}
+            >
+              <Text style={style.notYouText}>
+                Not you?
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     );
   }
@@ -68,7 +131,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators({ userCheckedIn }, dispatch)
+		actions: bindActionCreators({ userCheckedIn, signOut }, dispatch)
 	};
 }
 

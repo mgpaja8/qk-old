@@ -14,6 +14,8 @@ function userState(state = initialState, action) {
       return { employee: action.response.data, isFetching:false, isLoggedIn: true, taskGroups: [] };
     case actionTypes.FETCH_USER_ERROR:
       return { ...state, isFetching: false, isLoggedIn: false };
+    case actionTypes.SIGN_OUT:
+      return {...initialState};
     default:
       return state;
   }

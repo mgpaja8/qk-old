@@ -8,7 +8,7 @@ export const fontSize = {
 
 export const color = {
   primary: '#f15f28',
-  secondart: '#58595b',
+  secondary: '#58595b',
   white: '#ffffff',
   black: '#000000',
   darkGrey: '#555555',
