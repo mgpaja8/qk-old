@@ -1,4 +1,4 @@
-export interface OperationStateType {
+export interface OperationType {
   address: AddressType;
   closed: boolean;
   devices: Array<string>;

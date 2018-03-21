@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
+import { shiftStationKey } from '../lib/utils';
 const initialState = {
   isFetching: false,
   error: null,
@@ -26,7 +27,7 @@ function handleFetchTasksSuccess(state, data) {
     tasks[t.id] = t;
 
     // task groups
-    const taskKey = (t.shift + t.station).toLowerCase().replace(/\s/g, '');
+    const taskKey = shiftStationKey(t.shift, t.station);
     if (!taskGroups[taskKey]) {
       taskGroups[taskKey] = {
         shift: t.shift,

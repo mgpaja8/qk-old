@@ -70,5 +70,10 @@ export default StyleSheet.create({
   checkInButtonText: {
     marginLeft: 10,
     color: 'white'
+  },
+  loadingBodyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

@@ -9,7 +9,7 @@ import { signIn } from '../actions/actions';
 import CodeField from '../components/CodeField';
 import DigitButton from '../components/DigitButton';
 
-import { EmployeeType, OperationStateType } from '../types/qkTypes';
+import { EmployeeType, OperationType } from '../types/qkTypes';
 
 import style from '../styles/signIn';
 import { color } from '../styles/variables';
@@ -26,7 +26,7 @@ export interface SignInPropType {
   }
   navigator?: any;
   user: UserStateType;
-  operation: OperationStateType;
+  operation: OperationType;
 }
 
 export interface SignInStateType {

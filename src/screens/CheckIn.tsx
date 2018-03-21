@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { userCheckedIn, signOut } from '../actions/actions';
+import { shiftStationKey } from '../lib/utils';
 
 import Initials from '../components/Initials';
 
-import { EmployeeType } from '../types/qkTypes';
+import { EmployeeType, OperationType } from '../types/qkTypes';
 
 import style from '../styles/checkIn';
+import { color } from '../styles/variables';
 
 const checkInImage = require('../../assets/images/Check_In/ic_check_in.png');
+
+export interface TaskGroup {
+  shift: string;
+  station: string;
+  selected: boolean;
+  enabled: boolean;
+}
 
 export interface CheckInPropType {
   actions: {
@@ -22,9 +31,22 @@ export interface CheckInPropType {
   dispatch?: any;
   employee: EmployeeType;
   tasks: any;
+  operation: OperationType;
 }
 
-class CheckIn extends Component<CheckInPropType> {
+export interface CheckInStateType {
+  taskGroups: TaskGroup[];
+}
+
+class CheckIn extends Component<CheckInPropType, CheckInStateType> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      taskGroups: []
+    };
+  }
+
   componentWillMount() {
     const { employee } = this.props;
     const { taskGroups } = this.props.tasks;
@@ -56,6 +78,36 @@ class CheckIn extends Component<CheckInPropType> {
     }
   }
 
+  componentDidMount() {
+    const { taskGroups } = this.props.tasks;
+    const { shifts, stations } = this.props.operation;
+    let newState = [];
+
+    shifts.map(shift => {
+      stations.map(station => {
+        const key = shiftStationKey(shift.name, station);
+        if(taskGroups.hasOwnProperty(key)) {
+          const { inprogress, unassigned } = taskGroups[key];
+          let enabled = false;
+          if(inprogress.total > 0 || unassigned.total > 0) {
+            enabled = true;
+          }
+
+          newState = [...newState, {
+            shift: shift.name,
+            station,
+            enabled,
+            selected: false
+          }];
+        }
+      });
+    });
+
+    this.setState({
+      taskGroups: newState
+    });
+  }
+
   shouldComponentUpdate(nextProps, nextState): boolean {
     if (!nextProps.employee) {
       return false;
@@ -81,6 +133,7 @@ class CheckIn extends Component<CheckInPropType> {
   }
 
   render() {
+    console.log(this.state, Date.now());
     return(
       <SafeAreaView style={style.containerView}>
         {this.renderHeader()}
@@ -125,12 +178,31 @@ class CheckIn extends Component<CheckInPropType> {
   }
 
   renderBody() {
+    const { taskGroups } = this.state;
+    if(taskGroups.length === 0) {
+      return (
+        <View style={style.loadingBodyContainer}>
+          <ActivityIndicator size="small" color={color.primary} />
+        </View>
+      );
+    }
+
     return (
       <View style={{flex: 1}}>
-        <Text>
-          StyleSheet
-        </Text>
+        {
+          taskGroups.map((t,i) => {
+            return this.renderTaskGroupButton(t, i);
+          })
+        }
       </View>
+    );
+  }
+
+  renderTaskGroupButton(taskGroup: TaskGroup, i: number) {
+    return (
+      <Text key={i}>
+        {taskGroup.shift + ' ' + taskGroup.station}
+      </Text>
     );
   }
 
@@ -154,7 +226,8 @@ class CheckIn extends Component<CheckInPropType> {
 function mapStateToProps(state, ownProps) {
 	return {
 		employee: state.user.employee,
-    tasks: state.tasks
+    tasks: state.tasks,
+    operation: state.operation.operation
 	};
 }
 
