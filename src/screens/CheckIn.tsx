@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { userCheckedIn, signOut, assignTasks, tryAgainCheckIn } from '../actions/actions';
 import { shiftStationKey } from '../lib/utils';
 
-import Initials from '../components/Initials';
+import Pill from '../components/Pill';
 
 import { Navigator } from 'react-native-navigation';
 import { EmployeeType, OperationType } from '../types/qkTypes';
@@ -207,7 +207,7 @@ class CheckIn extends Component<CheckInPropType, CheckInStateType> {
         </Text>
         <View style={style.infoContainerView}>
           <View style={style.leftContainerView}>
-            <Initials initials={employee.initials}/>
+            <Pill text={employee.initials}/>
             <View style={style.employeeContainerView}>
               <Text style={style.employeeText}>
                 {employee.fullName}

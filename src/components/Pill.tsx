@@ -4,7 +4,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import { color } from '../styles/variables';
 
 export interface PropTypes {
-  initials: string;
+  text: string;
+  containerStyle?: any;
+  textStyle?: any;
 }
 
 const style = StyleSheet.create({
@@ -22,12 +24,17 @@ const style = StyleSheet.create({
   }
 });
 
-export default class Initials extends Component<PropTypes> {
+export default class Pill extends Component<PropTypes> {
   render() {
+    const {
+      containerStyle = {},
+      textStyle = {}
+    } = this.props;
+
     return (
-      <View style={style.containerView}>
-        <Text style={style.text}>
-          {this.props.initials}
+      <View style={[style.containerView, containerStyle]}>
+        <Text style={[style.text, textStyle]}>
+          {this.props.text}
         </Text>
       </View>
     );

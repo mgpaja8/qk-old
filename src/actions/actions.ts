@@ -157,3 +157,15 @@ export function tryAgainCheckIn(): (dispatch: Function) => void {
     });
   }
 }
+
+export function setChecklist(shift: string, station: string): (dispatch: Function) => void {
+  return function(dispatch: Function): void {
+    dispatch({
+      type: actionTypes.SET_CHECKLIST,
+      response: {
+        shift,
+        station
+      }
+    });
+  }
+}

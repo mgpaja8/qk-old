@@ -23,7 +23,7 @@ Navigation.startSingleScreenApp({
     style: {
       drawerShadow: false,
       contentOverlayColor: 'rgba(0,0,0,0.1)',
-      leftDrawerWidth: 70,
+      leftDrawerWidth: 80,
       shouldStretchDrawer: false
     },
     type: 'MMDrawer',

@@ -9,6 +9,7 @@ export const fontSize = {
 export const color = {
   primary: '#f15f28',
   secondary: '#58595b',
+  secondaryDark: '#2a2e30',
   white: '#ffffff',
   black: '#000000',
   darkGrey: '#555555',
