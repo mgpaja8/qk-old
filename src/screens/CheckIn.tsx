@@ -39,7 +39,7 @@ export interface CheckInPropType {
     ) => void;
     tryAgainCheckIn: () => void;
   }
-  navigator?: any;
+  navigator?: Navigator;
   dispatch?: any;
   employee: EmployeeType;
   tasks: any;

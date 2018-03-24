@@ -36,7 +36,13 @@ class DeviceRegistration extends Component<DeviceRegistrationPropTypes> {
 
   constructor(props) {
     super(props);
+    
     this.state = {};
+
+    props.navigator.setDrawerEnabled({
+      side: 'left',
+      enabled: false
+    });
   }
 
   componentDidMount() {

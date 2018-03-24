@@ -32,6 +32,7 @@ function tasksState(state = initialState, action) {
 }
 
 function handleFetchTasksSuccess(state, data) {
+  console.log('succes task fetch state', state);
   let taskGroups = {};
   let tasks = {};
   data.map(t => {

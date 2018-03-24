@@ -129,6 +129,15 @@ export function assignTasks(
           animationType: 'fade',
           navigatorStyle: {
             navBarHidden: true
+          },
+          drawer: {
+            left: {
+              screen: 'Menu',
+            },
+            style: {
+              leftDrawerWidth: 50,
+            },
+            disableOpenGesture: false
           }
         });
       })

@@ -15,5 +15,19 @@ Navigation.startSingleScreenApp({
     navigatorButtons: {}
   },
   passProps: {},
-  animationType: 'slide-down'
+  animationType: 'slide-down',
+  drawer: {
+    left: {
+      screen: 'Menu',
+    },
+    style: {
+      drawerShadow: false,
+      contentOverlayColor: 'rgba(0,0,0,0.1)',
+      leftDrawerWidth: 70,
+      shouldStretchDrawer: false
+    },
+    type: 'MMDrawer',
+    animationType: 'slide',
+    disableOpenGesture: false
+  },
 });
