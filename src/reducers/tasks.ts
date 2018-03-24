@@ -4,17 +4,28 @@ const initialState = {
   isFetching: false,
   error: null,
   tasks: [],
-  taskGroups: null
+  taskGroups: null,
+  assignTasksFetching: false,
+  assignTasksError: false,
+  assignTasksSuccess: false
 };
 
 function tasksState(state = initialState, action) {
   switch (action.type) {
     case actionTypes.FETCH_TASKS_LOADING:
-      return { ...initialState, isFetching: true };
+      return { ...state, isFetching: true, error: null, taskGroups: null, tasks: [] };
     case actionTypes.FETCH_TASKS_SUCCESS:
       return handleFetchTasksSuccess(state, action.response.data);
     case actionTypes.FETCH_TASKS_ERROR:
       return { ...state, isFetching: false, error: true };
+    case actionTypes.ASSIGN_TASKS_LOADING:
+      return {...state, assignTasksFetching: true, assignTasksSuccess: false, assignTasksError: false };
+    case actionTypes.ASSIGN_TASKS_SUCCESS:
+      return {...state, assignTasksFetching: false, assignTasksSuccess: true };
+    case actionTypes.ASSIGN_TASKS_ERROR:
+      return {...state, assignTasksFetching: false, assignTasksError: true };
+    case actionTypes.TRY_AGAIN_CHECK_IN:
+      return {...state, assignTasksError: false };
     default:
       return state;
   }

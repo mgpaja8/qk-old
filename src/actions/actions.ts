@@ -1,6 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import * as actionTypes from './actionTypes';
+import { Navigator } from 'react-native-navigation';
 
 const baseUrl = 'http://api-staging.qualitykitchen.co';
 
@@ -94,6 +95,56 @@ export function userCheckedIn(taskGroups: string[]): (dispatch: Function) => voi
     dispatch({
       type: actionTypes.USER_CHECKED_IN,
       taskGroups
+    });
+  }
+}
+
+export function assignTasks(
+  operationId: string,
+  employeeCode: string,
+  taskGroupings: any[],
+  navigator: Navigator): (dispatch: Function) => void {
+  const url = `${baseUrl}/operations/${operationId}/tasks/assignments`;
+
+  return function(dispatch: Function): void {
+    dispatch({
+      type: actionTypes.ASSIGN_TASKS_LOADING
+    });
+
+    axios.put(url, {
+      employeeCode,
+      taskGroupings
+    })
+      .then(response => {
+        dispatch({
+          type: actionTypes.ASSIGN_TASKS_SUCCESS,
+          response: taskGroupings
+        });
+
+        fetchTasks(operationId, dispatch);
+
+        navigator.resetTo({
+          screen: 'Checklist',
+          animated: true,
+          animationType: 'fade',
+          navigatorStyle: {
+            navBarHidden: true
+          }
+        });
+      })
+      .catch(e => {
+        console.log('error', e);
+        dispatch({
+          type: actionTypes.ASSIGN_TASKS_ERROR
+        });
+      });
+  }
+}
+
+export function tryAgainCheckIn(): (dispatch: Function) => void {
+  return function(dispatch: Function): void {
+    dispatch({
+      type: actionTypes.TRY_AGAIN_CHECK_IN
     });
   }
 }

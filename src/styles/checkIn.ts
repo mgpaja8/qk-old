@@ -58,6 +58,7 @@ export default StyleSheet.create({
   },
   checkInButtonContainerView: {
     justifyContent: 'center',
+    height: 35,
     margin: 5,
     padding: 5,
     backgroundColor: color.primary
@@ -75,5 +76,70 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  bodyContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    paddingVertical: 10,
+    paddingHorizontal: 5
+  },
+  taskGroupButton: {
+    paddingHorizontal: 5,
+    paddingVertical: 10,
+    marginBottom: 5,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: color.primary
+  },
+  taskGroupButtonText: {
+    fontSize: 12,
+    color: color.black,
+    textAlign: 'center'
+  },
+  disabledText: {
+    fontSize: 12,
+    color: color.mediumGrey,
+    textAlign: 'center'
+  },
+  selectedButton: {
+    backgroundColor: color.primary
+  },
+  selectedText: {
+    fontSize: 12,
+    color: color.white,
+    textAlign: 'center'
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5
+  },
+  errorTitleText: {
+    fontWeight: 'bold',
+    fontSize: 12,
+    marginBottom: 5
+  },
+  errorImageView: {
+    marginBottom: 5
+  },
+  errorText: {
+    fontSize: 12,
+    fontWeight: '100',
+    marginBottom: 5
+  },
+  tryAgainButton: {
+    height: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    backgroundColor: color.primary
+  },
+  tryAgainText: {
+    fontSize: 14,
+    color: 'white'
   }
 });
