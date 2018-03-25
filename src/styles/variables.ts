@@ -15,7 +15,8 @@ export const color = {
   darkGrey: '#555555',
   mediumGrey: '#cccccc',
   lightGrey: '#eeeeee',
-  bgGrey: '#f8f8f8'
+  bgGrey: '#f8f8f8',
+  blue: '#3b9cd9'
 };
 
 export const padding = {

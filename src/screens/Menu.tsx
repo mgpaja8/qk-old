@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -11,6 +11,10 @@ import { Navigator } from 'react-native-navigation';
 import { EmployeeType } from '../types/qkTypes';
 
 import style from '../styles/menu';
+
+const assignmentImage = require('../../assets/images/Assignment/ic_assignment_ind.png');
+const settingsImage = require('../../assets/images/Settings/ic_settings.png');
+const warningImage = require('../../assets/images/Warning/ic_warning.png');
 
 export interface MenuPropType {
   actions: {
@@ -74,10 +78,12 @@ class Menu extends Component<MenuPropType> {
     return(
       <SafeAreaView style={style.container}>
         {this.renderHeader()}
-        {Object.keys(taskGroups).map(tg => this.renderTaskGroup(taskGroups[tg]))}
-        {this.renderIncidentsLink()}
-        {this.renderSwitchChecklistLink()}
-        {this.renderSettingsLink()}
+        <ScrollView>
+          {Object.keys(taskGroups).map(tg => this.renderTaskGroup(taskGroups[tg]))}
+          {this.renderIncidentsLink()}
+          {this.renderSwitchChecklistLink()}
+          {this.renderSettingsLink()}
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -103,10 +109,13 @@ class Menu extends Component<MenuPropType> {
   renderTaskGroup(taskGroup: any) {
     const { shift, station, inprogress, unassigned } = taskGroup;
     const total = inprogress.total + unassigned.total;
+    const selected = this.props.menu.screen === 'Checklist' &&
+                     this.props.menu.shift === shift &&
+                     this.props.menu.station === station
+                      ? true
+                      : false;
 
-    const containerStyle = this.props.menu.screen === 'Checklist' &&
-                           this.props.menu.shift === shift &&
-                           this.props.menu.station === station
+    const containerStyle = selected
                             ? [style.menuItemContainer, style.selectedMenuItem]
                             : [style.menuItemContainer];
 
@@ -116,7 +125,8 @@ class Menu extends Component<MenuPropType> {
         onPress={() => this.onTaskGroupPress(shift, station)}
       >
         <View style={containerStyle}>
-          <Text style={[style.whiteText, { flex: 1 }]}>
+          {selected && <Image source={assignmentImage} style={style.iconStyleSelected}/>}
+          <Text style={[style.whiteText, { flex: 1 }, !selected && { marginLeft: 29 }]}>
             {`${shift} ${station}`}
           </Text>
           <Pill text={total}/>
@@ -135,6 +145,7 @@ class Menu extends Component<MenuPropType> {
         onPress={this.onIncidentCenterPress}
       >
         <View style={containerStyle}>
+          <Image source={warningImage} style={style.iconStyle}/>
           <Text style={[style.whiteText, { flex: 1 }]}>
             Incident Center
           </Text>
@@ -153,6 +164,7 @@ class Menu extends Component<MenuPropType> {
         onPress={this.onSwitchChecklistPress}
       >
         <View style={containerStyle}>
+          <Image source={assignmentImage} style={style.iconStyle}/>
           <Text style={[style.whiteText, { flex: 1 }]}>
             Switch Checklist
           </Text>
@@ -171,6 +183,7 @@ class Menu extends Component<MenuPropType> {
         onPress={this.onSettingsPress}
       >
         <View style={containerStyle}>
+          <Image source={settingsImage} style={style.iconStyle}/>
           <Text style={[style.whiteText, { flex: 1 }]}>
             Settings
           </Text>

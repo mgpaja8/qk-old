@@ -27,9 +27,20 @@ export default StyleSheet.create({
   selectedMenuItem: {
     backgroundColor: color.black
   },
+  iconStyleSelected: {
+    height: 24,
+    width: 24,
+    tintColor: color.blue
+  },
+  iconStyle: {
+    height: 24,
+    width: 24,
+    tintColor: color.white
+  },
   whiteText: {
     fontSize: 12,
     fontWeight: '100',
-    color: color.white
+    color: color.white,
+    marginLeft: 5
   }
 });
