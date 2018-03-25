@@ -82,10 +82,7 @@ class CheckIn extends Component<CheckInPropType, CheckInStateType> {
       this.props.navigator.resetTo({
         screen: 'Checklist',
         animated: true,
-        animationType: 'fade',
-        navigatorStyle: {
-          navBarHidden: true
-        }
+        animationType: 'fade'
       });
     }
   }

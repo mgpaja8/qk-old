@@ -59,6 +59,7 @@ class Menu extends Component<MenuPropType> {
       const { taskGroups } = nextProps.tasks;
       const taskGroup = taskGroups[Object.keys(taskGroups)[0]];
 
+      this.props.actions.setChecklist(taskGroup.shift, taskGroup.station);
       this.props.actions.setMenuItem('Checklist', taskGroup.shift, taskGroup.station);
     }
   }

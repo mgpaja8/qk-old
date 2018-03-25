@@ -42,6 +42,11 @@ class SignIn extends Component<SignInPropType, SignInStateType> {
     this.state = {
       code: []
     }
+
+    props.navigator.setDrawerEnabled({
+      side: 'left',
+      enabled: false
+    });
   }
 
   componentWillReceiveProps(nextProps: SignInPropType): void {

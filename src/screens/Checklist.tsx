@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
-//import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { signOut } from '../actions/actions';
+
+import { color } from '../styles/variables';
 
 export interface ChecklistPropType {
-  // actions: {
-  //   setChecklist: (shift: string, station: string) => void;
-  // }
-  navigator?: Navigator;
+  actions: {
+    signOut: () => void;
+  }
+  navigator?: any;
   dispatch?: any;
   checklist: {
     shift: string,
@@ -18,17 +21,77 @@ export interface ChecklistPropType {
 }
 
 class Checklist extends Component<ChecklistPropType> {
+  static navigatorStyle = {
+    navBarTextColor: color.primary,
+    navBarTextFontSize: 16,
+    navBarButtonColor: color.primary
+  };
+
+  static navigatorButtons = {
+    rightButtons: [
+      {
+        icon: require('../../assets/images/Exit/ic_exit_to_app.png'),
+        id: 'exit'
+      }
+    ],
+    leftButtons: [
+      {
+        icon: require('../../assets/images/Menu/ic_menu.png'),
+        id: 'menu'
+      }
+    ]
+  };
+
   constructor(props) {
     super(props);
 
-    props.navigator.setDrawerEnabled({
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.props.navigator.setDrawerEnabled({
       side: 'left',
       enabled: true
     });
   }
 
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'exit') {
+        this.props.actions.signOut();
+        this.props.navigator.resetTo({
+          screen: 'SignIn',
+          animated: true,
+          animationType: 'fade',
+          navigatorStyle: {
+            navBarHidden: true
+          }
+        });
+      }
+      if (event.id == 'menu') {
+        this.props.navigator.toggleDrawer({
+          side: 'left',
+          animated: true,
+          to: 'open'
+        });
+      }
+    }
+  }
+
+  componentWillMount() {
+    const { shift, station } = this.props.checklist;
+    this.setTitle(shift, station, this.props.navigator);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { shift, station } = nextProps.checklist;
+    this.setTitle(shift, station, nextProps.navigator);
+  }
+
+  setTitle(shift: string, station: string, navigator: any) {
+    navigator.setTitle({
+      title: `${shift} ${station}`
+    });
+  }
+
   render() {
-    console.log(this.props);
     return (
       <SafeAreaView>
         <Text>
@@ -48,12 +111,12 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-// function mapDispatchToProps(dispatch) {
-// 	return {
-// 		actions: bindActionCreators({
-//       setChecklist
-//     }, dispatch)
-// 	};
-// }
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: bindActionCreators({
+      signOut
+    }, dispatch)
+	};
+}
 
-export default connect(mapStateToProps, null)(Checklist);
+export default connect(mapStateToProps, mapDispatchToProps)(Checklist);

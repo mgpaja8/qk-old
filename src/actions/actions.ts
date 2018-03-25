@@ -126,19 +126,7 @@ export function assignTasks(
         navigator.resetTo({
           screen: 'Checklist',
           animated: true,
-          animationType: 'fade',
-          navigatorStyle: {
-            navBarHidden: true
-          },
-          drawer: {
-            left: {
-              screen: 'Menu',
-            },
-            style: {
-              leftDrawerWidth: 50,
-            },
-            disableOpenGesture: false
-          }
+          animationType: 'fade'
         });
       })
       .catch(e => {
