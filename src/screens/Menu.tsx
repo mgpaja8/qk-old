@@ -3,7 +3,7 @@ import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setChecklist } from '../actions/actions';
+import { setChecklist, setMenuItem } from '../actions/actions';
 
 import Pill from '../components/Pill';
 
@@ -15,28 +15,48 @@ import style from '../styles/menu';
 export interface MenuPropType {
   actions: {
     setChecklist: (shift: string, station: string) => void;
+    setMenuItem: (
+      screen: string,
+      shift?: string,
+      station?: string
+    ) => void;
   }
   navigator?: Navigator;
   dispatch?: any;
   employee: EmployeeType;
   tasks: any;
+  menu: any;
 }
 
 class Menu extends Component<MenuPropType> {
   onTaskGroupPress(shift: string, station: string) {
     this.props.actions.setChecklist(shift, station);
+    this.props.actions.setMenuItem('Checklist', shift, station);
   }
 
   onIncidentCenterPress = () => {
     console.log('Incident Center Pressed');
+    this.props.actions.setMenuItem('Incidents');
   }
 
   onSwitchChecklistPress = () => {
     console.log('SwitchChecklist Pressed');
+    this.props.actions.setMenuItem('SwitchChecklist');
   }
 
   onSettingsPress = () => {
     console.log('Settings Pressed');
+    this.props.actions.setMenuItem('Settings');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.tasks.taskGroups && !nextProps.menu.screen) {
+      // Set first task group item as selected in the menu
+      const { taskGroups } = nextProps.tasks;
+      const taskGroup = taskGroups[Object.keys(taskGroups)[0]];
+
+      this.props.actions.setMenuItem('Checklist', taskGroup.shift, taskGroup.station);
+    }
   }
 
   render() {
@@ -84,12 +104,18 @@ class Menu extends Component<MenuPropType> {
     const { shift, station, inprogress, unassigned } = taskGroup;
     const total = inprogress.total + unassigned.total;
 
+    const containerStyle = this.props.menu.screen === 'Checklist' &&
+                           this.props.menu.shift === shift &&
+                           this.props.menu.station === station
+                            ? [style.menuItemContainer, style.selectedMenuItem]
+                            : [style.menuItemContainer];
+
     return (
       <TouchableOpacity
         key={`${shift}${station}`}
         onPress={() => this.onTaskGroupPress(shift, station)}
       >
-        <View style={style.menuItemContainer}>
+        <View style={containerStyle}>
           <Text style={[style.whiteText, { flex: 1 }]}>
             {`${shift} ${station}`}
           </Text>
@@ -100,11 +126,15 @@ class Menu extends Component<MenuPropType> {
   }
 
   renderIncidentsLink() {
+    const containerStyle = this.props.menu.screen === 'Incidents'
+                            ? [style.menuItemContainer, style.selectedMenuItem]
+                            : [style.menuItemContainer];
+
     return (
       <TouchableOpacity
         onPress={this.onIncidentCenterPress}
       >
-        <View style={style.menuItemContainer}>
+        <View style={containerStyle}>
           <Text style={[style.whiteText, { flex: 1 }]}>
             Incident Center
           </Text>
@@ -114,11 +144,15 @@ class Menu extends Component<MenuPropType> {
   }
 
   renderSwitchChecklistLink() {
+    const containerStyle = this.props.menu.screen === 'SwitchChecklist'
+                            ? [style.menuItemContainer, style.selectedMenuItem]
+                            : [style.menuItemContainer];
+
     return (
       <TouchableOpacity
         onPress={this.onSwitchChecklistPress}
       >
-        <View style={style.menuItemContainer}>
+        <View style={containerStyle}>
           <Text style={[style.whiteText, { flex: 1 }]}>
             Switch Checklist
           </Text>
@@ -128,11 +162,15 @@ class Menu extends Component<MenuPropType> {
   }
 
   renderSettingsLink() {
+    const containerStyle = this.props.menu.screen === 'Settings'
+                            ? [style.menuItemContainer, style.selectedMenuItem]
+                            : [style.menuItemContainer];
+
     return (
       <TouchableOpacity
         onPress={this.onSettingsPress}
       >
-        <View style={style.menuItemContainer}>
+        <View style={containerStyle}>
           <Text style={[style.whiteText, { flex: 1 }]}>
             Settings
           </Text>
@@ -145,14 +183,16 @@ class Menu extends Component<MenuPropType> {
 function mapStateToProps(state, ownProps) {
 	return {
 		employee: state.user.employee,
-    tasks: state.tasks
+    tasks: state.tasks,
+    menu: state.menu
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		actions: bindActionCreators({
-      setChecklist
+      setChecklist,
+      setMenuItem
     }, dispatch)
 	};
 }

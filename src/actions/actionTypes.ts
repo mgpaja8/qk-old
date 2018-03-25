@@ -23,3 +23,6 @@ export const TRY_AGAIN_CHECK_IN = 'TRY_AGAIN_CHECK_IN';
 
 // checklist
 export const SET_CHECKLIST = 'SET_CHECKLIST';
+
+// menu
+export const SET_SELECTED_MENU_ITEM = 'SET_SELECTED_MENU_ITEM';

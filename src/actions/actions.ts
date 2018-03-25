@@ -169,3 +169,17 @@ export function setChecklist(shift: string, station: string): (dispatch: Functio
     });
   }
 }
+
+// screen is key ex. checklist, incident, setting, switchChecklist
+export function setMenuItem(screen: string, shift?: string, station?: string): (dispatch: Function) => void {
+  return function(dispatch: Function): void {
+    dispatch({
+      type: actionTypes.SET_SELECTED_MENU_ITEM,
+      response: {
+        screen,
+        shift,
+        station
+      }
+    });
+  }
+}
